@@ -4,6 +4,9 @@
 local opt = vim.opt
 
 opt.swapfile = false
+opt.mouse = "a"
+opt.clipboard = "unnamedplus"
+opt.expandtab = true
 
 local g = vim.g
 g["test#strategy"] = "neovim"
