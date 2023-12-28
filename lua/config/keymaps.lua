@@ -29,6 +29,7 @@ map(
   "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{})<cr>",
   { desc = "Search Buffers", remap = true }
 )
+map("n", "<leader>F", "<cmd>Telescope live_grep<cr>", { desc = "Search text", remap = true })
 map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code Action", remap = true })
 map("n", "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<cr>", { desc = "Document Diagnostics", remap = true })
 map("n", "<leader>lw", "<cmd>Telescope diagnostics<cr>", { desc = "Workspace Diagnostics", remap = true })
