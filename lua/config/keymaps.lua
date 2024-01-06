@@ -18,6 +18,18 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 
+local opts = { noremap = true, silent = true }
+
+map("n", "<M-Up>", ":resize -2<CR>", opts)
+map("n", "<M-Down>", ":resize +2<CR>", opts)
+map("n", "<M-Left>", ":vertical resize -2<CR>", opts)
+map("n", "<M-Right>", ":vertical resize +2<CR>", opts)
+map("v", "p", '"_dP', opts)
+
+map("n", "<leader>h", ":nohl<CR>", { desc = "Remove highlight", remap = true })
+map("n", "]g", ":lua vim.diagnostic.goto_next()<CR>", { desc = "Go to next diagnostic", remap = true })
+map("n", "{g", ":lua vim.diagnostic.goto_prev()<CR>", { desc = "Go to previous diagnostic", remap = true })
+
 map("i", "jk", "<ESC>", { desc = "Leave Insert Mode", remap = true })
 map("n", "<C-p>", ":Telescope find_files<CR>", { desc = "Find File", remap = true })
 map("i", "kj", "<ESC>", { desc = "Leave Insert Mode", remap = true })
