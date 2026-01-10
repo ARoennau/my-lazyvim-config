@@ -136,6 +136,8 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 
+local builtin = require("telescope.builtin")
+
 -------------------------------------------------------------------------------
 -- 1. VS CODE SPECIFIC (Muscle memory from your VSCodeVim JSON)
 -------------------------------------------------------------------------------
@@ -280,6 +282,12 @@ map("v", "p", '"_dP')
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
+-- Movement
+map("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Move to left split from terminal" })
+map("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Move to below split from terminal" })
+map("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Move to above split from terminal" })
+map("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Move to right split from terminal" })
+
 -------------------------------------------------------------------------------
 -- 3. TERMINAL ONLY (Telescope, ToggleTerm, Nvim LSP)
 -------------------------------------------------------------------------------
@@ -296,6 +304,39 @@ if not vim.g.vscode then
   map("n", "<leader>F", "<cmd>Telescope live_grep<CR>", { desc = "Search text" })
   map("n", "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Document Diagnostics" })
   map("n", "<leader>lw", "<cmd>Telescope diagnostics<CR>", { desc = "Workspace Diagnostics" })
+  -- <leader>fs: Fuzzy-find a directory, then live grep inside it
+  vim.keymap.set("n", "<leader>fs", function()
+    builtin.find_files({
+      prompt_title = "Select Directory",
+      find_command = { "find", ".", "-type", "d", "-not", "-path", "*/.*" },
+      attach_mappings = function(prompt_bufnr, _)
+        local actions = require("telescope.actions")
+        local action_state = require("telescope.actions.state")
+
+        actions.select_default:replace(function()
+          local selection = action_state.get_selected_entry()
+          actions.close(prompt_bufnr)
+          if selection then
+            builtin.live_grep({ search_dirs = { selection.value } })
+          end
+        end)
+        return true
+      end,
+    })
+  end, { desc = "Grep in selected directory" })
+
+  -- <leader>fd: Prompt for a path string, then live grep inside it
+  vim.keymap.set("n", "<leader>fd", function()
+    vim.ui.input({
+      prompt = "Directory to grep: ",
+      default = "./",
+      completion = "dir",
+    }, function(input)
+      if input and input ~= "" then
+        builtin.live_grep({ search_dirs = { input } })
+      end
+    end)
+  end, { desc = "Grep in typed directory" })
 
   -- Diagnostics
   map("n", "]g", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
@@ -336,4 +377,4 @@ if not vim.g.vscode then
 end
 
 -- Copilot
-vim.keymap.set("i", "<C-i>", "<cmd>Copilot suggestion<CR>", { desc = "Copilot" })
+-- vim.keymap.set("i", "<C-i>", "<cmd>Copilot suggestion<CR>", { desc = "Copilot" })
