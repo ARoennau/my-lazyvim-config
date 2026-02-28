@@ -293,8 +293,8 @@ map("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Move to right split from termi
 -------------------------------------------------------------------------------
 if not vim.g.vscode then
   -- Force % to work correctly
-  map("n", "%", "<Plug>(matchup-%)")
-  map("v", "%", "<Plug>(matchup-%)")
+  -- map("n", "%", "<Plug>(matchup-%)")
+  -- map("v", "%", "<Plug>(matchup-%)")
 
   -- Telescope
   map("n", "<C-p>", "<cmd>Telescope find_files<CR>", { desc = "Find File" })
@@ -367,7 +367,10 @@ if not vim.g.vscode then
   map("n", "<leader>li", "<cmd>LspInfo<CR>")
 
   -- Testing & Term
-  map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<CR>")
+  -- map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<CR>")
+  map("n", "<leader>th", function()
+    Snacks.terminal.toggle()
+  end, { desc = "Toggle Terminal" })
   map("n", "<leader>js", "<cmd>TestNearest<CR>")
   map("n", "<leader>jl", "<cmd>TestLast<CR>")
   map("n", "<leader>jf", "<cmd>TestFile<CR>")

@@ -45,6 +45,7 @@ return {
       fish = { "fish_indent" },
       sh = { "shfmt" },
       javascript = { "prettier" }, -- Uncomment and enable prettier for JS
+      go = { "gofumpt " },
       -- Add more languages and formatters as needed
     },
     formatters = {
